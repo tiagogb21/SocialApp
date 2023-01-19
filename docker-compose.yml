@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  # Service that will run the node
+  node:
+    # Container base image
+    image: node:16.14
+    # Container name --> facilitate execution
+    container_name: social_midia
+    # Dockerfile path
+    build: ./
+    # Same that `docker run -t`
+    tty: true
+    # Same that `docker run -i`
+    stdin_open: true
+    # Replaces the default node image command
+    command: bash
+    # Restarts the image in case something stops it
+    restart: always
+    # Working directory
+    working_dir: /app
+    # List of volumes (directories) mapped from outside to inside the container
+    volumes:
+      # Mounts the current directory, with all project data, inside the /app directory
+      - ./:/app
+    # List of services on which this service depends
+    depends_on:
+      # Need mongo running before uploading node
+      - mongodb
+    # Lista de portas mapeadas de dentro para fora do container
+    ports:
+      # Expose the application's default port: change it here if you use another port
+      - 8080:8080 # notação: inside_door:outside:door
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/social_midia
+
+  # Service that will run mongodb
+  mongodb:
+    image: mongo:5.0.7
+    container_name: social_midia_db
+    volumes:
+      - ./:/app
+    restart: always
+    ports:
+      # Ensure there are no port conflicts with a mongodb running locally
+      - 27017:27017
+
+# List of networks that containers will use
+networks:
+  # Default network, created automatically
+  default:
+    # Gives a specific name to the default network
+    name: social_midia_net
+
