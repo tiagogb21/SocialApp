@@ -5,7 +5,7 @@ import { Error } from 'mongoose';
 import app from './app';
 import connectToDatabase from './database/connection';
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 connectToDatabase()
   .then(() => {

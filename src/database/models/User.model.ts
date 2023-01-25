@@ -15,13 +15,13 @@ const usersMongoSchema = new Schema<IUser>({
     passwordConfirmation: String,
   },
   photo: String,
-  isActive: Boolean,
+  isActive: { type: Boolean, default: false },
+  hash: { type: String, default: '' },
+  token: { type: String, default: '' },
 });
 
 usersMongoSchema.pre('save', async function (next) {
   const {password, passwordConfirmation} = this.confirm;
-
-  if (!this.isModified('password')) return next();
 
   this.confirm.password = await bcrypt.hash(password);
 

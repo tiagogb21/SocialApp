@@ -18,6 +18,7 @@ export const userZodSchema = z.object({
   email: z.coerce.string().email(),
   confirm: passwordForm,
   photo: z.string(),
-  isActive: z.boolean(),
-  token: z.string(),
+  isActive: z.boolean().default(false),
+  token: z.string().default(''),
+  hash: z.string().default(''),
 });

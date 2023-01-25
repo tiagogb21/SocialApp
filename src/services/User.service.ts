@@ -13,6 +13,14 @@ export default class UserService implements IService<IUser> {
   }
 
   async create(obj:IUser):Promise<IUser> {
+    const { email } = obj;
+
+    const findUser = await this._user.readOneByQuery({
+      $or: [{ username: obj.username }, { email: obj.email }],
+    });
+
+    if(findUser) throw new Error('User already exists');
+
     return this._user.create(obj);
   }
 

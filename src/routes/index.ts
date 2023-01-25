@@ -3,6 +3,6 @@ import routerUser from './user.route';
 
 const route = Router();
 
-route.use('/auth/user', routerUser);
+route.use('/api/v1', routerUser);
 
 export default route;

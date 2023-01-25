@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
-const { MONGO_DB_URL } = process.env;
+const { MONGO_DB_URI } = process.env;
 
-const connectToDatabase = (mongoDatabaseURI = MONGO_DB_URL as string) =>
-  mongoose.connect(mongoDatabaseURI);
+const connectToDatabase = () =>
+  mongoose.connect(MONGO_DB_URI as string);
 
 export default connectToDatabase;

@@ -23,6 +23,11 @@ abstract class MongoModel<T> implements IModel<T> {
     return findOneQuery;
   }
 
+  async readOneByQuery(query: object): Promise<T | null> {
+    const findOneQuery = this._model.findOne(query);
+    return findOneQuery;
+  }
+
   async read():Promise<T[] | null> {
     const find = this._model.find({});
     return find;
