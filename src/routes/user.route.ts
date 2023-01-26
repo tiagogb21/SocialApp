@@ -4,6 +4,7 @@ import { Router } from 'express';
 import UserModel from '../database/models/User.model';
 // CONTROLLER
 import UserController from '../controllers/User.controller';
+import AuthController from '../controllers/Auth.controller';
 // SERVICE
 import UserService from '../services/User.service';
 // MIDDLEWARE
@@ -12,11 +13,12 @@ import validId from '../middlewares/id.middleware';
 // INTERFACE
 import { userZodSchema } from '../utils/libs/Zod/schemas/user.schema';
 import { AuthService } from '../services/Auth.service';
-import AuthController from '../controllers/Auth.controller';
+import { validateCreate, verifyFindUser } from '../middlewares/user.middleware';
 
 const routerUser = Router();
 
 const modelUser = new UserModel();
+
 const userModelService = new UserService(modelUser);
 const userModelController = new UserController(userModelService);
 
@@ -37,6 +39,12 @@ routerUser.get(
 routerUser.post(
   '/auth/login',
   (req, res) => authModelController.login(req, res),
+);
+
+routerUser.post(
+  '/user',
+  validateCreate,
+  (req, res) => userModelController.create(req, res),
 );
 
 routerUser.get(

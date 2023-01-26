@@ -10,10 +10,10 @@ export const postZodSchema = z.object({
       text: z.string(),
       postedBy: z.string(),
     })
-  ).optional(),
+  ).default([]),
   likes: z.object({
     users: z.array(z.string()),
-  }).optional(),
+  }).default({ users: [] }),
   createdAt: z.date(),
   updatedAt: z.date().optional(),
 });

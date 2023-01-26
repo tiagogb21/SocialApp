@@ -39,6 +39,38 @@ export default class PostService implements IService<IPost> {
     return readOnePost;
   }
 
+  async like(_id: string, obj: string): Promise<IPost | null> {
+    const likePost = await this._post.readOne(_id);
+
+    if (!likePost) throw new Error('Post not found');
+
+    const {likes} = likePost;
+
+    if(!likes) throw new Error('Post not found');
+
+    likes.users = [...likes.users, obj];
+
+    await this._post.update(_id, likePost);
+
+    return likePost;
+  }
+
+  async comment(_id: string, obj: string) {
+    const commentPost = await this._post.readOne(_id);
+
+    if (!commentPost) throw new Error('Post not found');
+
+    const { comments } = commentPost;
+
+    if(!comments) throw new Error('Post not found');
+
+    comments.push(obj);
+
+    await this._post.update(_id, commentPost);
+
+    return commentPost;
+  }
+
   async update(_id: string, obj: IPost): Promise<IPost | null> {
     const updatePost = await this._post.update(_id, obj);
 

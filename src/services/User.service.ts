@@ -12,16 +12,9 @@ export default class UserService implements IService<IUser> {
     this._user = model;
   }
 
-  async create(obj:IUser):Promise<IUser> {
-    const { email } = obj;
-
-    const findUser = await this._user.readOneByQuery({
-      $or: [{ username: obj.username }, { email: obj.email }],
-    });
-
-    if(findUser) throw new Error('User already exists');
-
-    return this._user.create(obj);
+  async create(user: IUser): Promise<IUser> {
+    const newUser = this._user.create(user);
+    return newUser;
   }
 
   async read(): Promise<IUser[] | null> {
@@ -31,19 +24,16 @@ export default class UserService implements IService<IUser> {
 
   async readOne(_id: string): Promise<IUser | null> {
     const readOneUser = await this._user.readOne(_id);
-    if (!readOneUser) throw new Error('Object not found');
     return readOneUser;
   }
 
   async update(_id: string, obj: IUser): Promise<IUser | null> {
     const updateUser = await this._user.update(_id, obj);
-    if (!updateUser) throw new Error('Object not found');
     return updateUser;
   }
 
   async delete(_id: string): Promise<IUser | null> {
     const deleteUser = await this._user.delete(_id);
-    if (!deleteUser) throw new Error('EntityNotFound');
     return deleteUser;
   }
 }
